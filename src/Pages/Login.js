@@ -1,11 +1,126 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
+const LoginPage = () => {
+    const [formInput, setFormInput] = useState({
+        username : '',
+        password : ''
+    })
+
+    const handleChange = (e) => {
+        setFormInput({
+            ...formInput,
+            [e.target.name] : e.target.value
+        })
+    }
+
+    const handleLogin = () => {
+
+    }
     return ( 
         <div>
-            Login
+            <div className='row'
+                style={{
+                    minHeight : '80vh'
+                }}
+            >
+                <div className='col-7'
+                    style={{
+                        backgroundColor : 'grey',
+                        display : 'flex',
+                        justifyContent : 'center',
+                        alignItems : 'center',
+                        textAlign : 'center'
+                    }}
+                >
+                    <div
+                        style={{
+                            color : 'white'
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontWeight : 500,
+                                fontSize : '40px'
+                            }}
+                            className='my-3'
+                        >
+                            Welcome Back !
+                        </div>
+                        <div
+                            className='my-5'
+                            style={{
+                                fontWeight : 400,
+                                fontSize : '20px'
+                            }}
+                        >
+                            Sign in to continue access
+                        </div>
+                        <div>
+                            <div>
+                                Don't have an account? Click here!
+                            </div>
+                            <div>
+                                <Link to='/register'>
+                                    <Button
+                                        className='form-control btn-custom white'
+                                        >
+                                        Register
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='col-5'
+                    style={{
+                        display : 'flex',
+                        justifyContent : 'center',
+                        alignItems : 'center',
+                        textAlign : 'center'
+                    }}
+                >
+                    <Form
+                        style={{
+                            padding : '50px',
+                            width : '400px'
+                        }}
+                    >
+                        <Label>
+                            Login
+                        </Label>
+                        <FormGroup>
+                            <Input
+                                type='text'
+                                name='username'
+                                id='username'
+                                placeholder='Username'
+                                onChange={handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Input
+                                type='password'
+                                name='password'
+                                id='password'
+                                placeholder='Password'
+                                onChange={handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Button
+                                className='form-control btn-custom gray'
+                                onClick={handleLogin}
+                            >
+                                Login
+                            </Button>
+                        </FormGroup>
+                    </Form>
+                </div>
+            </div>
         </div>
      );
 }
  
-export default Login;
+export default LoginPage;

@@ -28,6 +28,34 @@
   color: #61dafb;
 }
 
+.btn-custom{
+  transition: 250ms;
+}
+
+.white{
+  background-color: white !important;
+  color: black !important;
+}
+
+.white:hover{
+  background-color: gray !important;
+  color: white !important;
+  border: black 1px solid ;
+}
+
+.gray{
+  background-color: gray !important;
+  color: white !important;
+}
+
+.gray:hover{
+  background-color: white !important;
+  color: gray !important;
+  border: gray 1px solid;
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
