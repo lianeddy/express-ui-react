@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Login } from '../Redux/Action';
 
 const LoginPage = () => {
     const [formInput, setFormInput] = useState({
@@ -15,9 +17,18 @@ const LoginPage = () => {
         })
     }
 
-    const handleLogin = () => {
+    const dispatch = useDispatch()
 
+    const handleLogin = () => {
+        dispatch(
+            Login(formInput)
+        )
     }
+
+    const loading = useSelector((state) => state.auth.loading)
+
+    // console.log(formInput)
+
     return ( 
         <div>
             <div className='row'
@@ -113,7 +124,13 @@ const LoginPage = () => {
                                 className='form-control btn-custom gray'
                                 onClick={handleLogin}
                             >
-                                Login
+                                {
+                                    loading
+                                    ?
+                                    'Loading...'
+                                    :
+                                    'Login'
+                                }
                             </Button>
                         </FormGroup>
                     </Form>

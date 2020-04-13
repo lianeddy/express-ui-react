@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Register } from '../Redux/Action';
+import { useDispatch, useSelector } from 'react-redux';
 
 const RegisterPage = () => {
 
@@ -18,11 +20,31 @@ const RegisterPage = () => {
         })
     }
 
+    const dispatch = useDispatch()
+
     const handleRegister = ()=> {
-       
+        let { username, email, password, confirmPassword } = formInput;
+        if(username && email && password && confirmPassword){
+            if(password === confirmPassword){
+                dispatch(
+                    Register({
+                        username,
+                        email,
+                        password
+                    })
+                    )
+            }else{
+                alert('Invalid Password')
+            }
+        }else{
+            alert('Please fill in all the forms')
+        }
     }
 
-    console.log(formInput)
+    const loading = useSelector((state) => state.auth.loading)
+
+    console.log(formInput, 'isi state')
+    console.log(loading, 'isi global state loading')
     return(
         <div>
             <div className='row'
@@ -88,7 +110,13 @@ const RegisterPage = () => {
                                 className='form-control btn-custom gray'
                                 onClick={handleRegister}
                             >
-                                Login
+                                {
+                                    loading
+                                    ?
+                                    'Loading...'
+                                    :
+                                    'Register'
+                                }
                             </Button>
                         </FormGroup>
                     </Form>
