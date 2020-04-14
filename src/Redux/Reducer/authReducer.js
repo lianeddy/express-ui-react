@@ -2,7 +2,8 @@ import {
     API_AUTH_START,
     API_AUTH_SUCCESS,
     API_AUTH_FAILED,
-    LOGIN
+    LOGIN,
+    LOGOUT
 } from '../types';
 
 const INITIAL_STATE = {
@@ -39,6 +40,8 @@ export const authReducer = (state = INITIAL_STATE, action) => {
                 // email : action.payload.email,
                 // roleId : action.payload.roleId
             }
+        case LOGOUT : 
+            return INITIAL_STATE
         default : 
             return state
     }

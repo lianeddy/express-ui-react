@@ -9,18 +9,14 @@ import Register from './Pages/Register';
 import { keepLogin } from './Redux/Action';
 
 function App() {
-  const token = localStorage.getItem('token')
-  console.log(token)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(token){
-      dispatch(
-        keepLogin(token)
-      )
-    }
-  }, [token, dispatch])
+    dispatch(
+      keepLogin()
+    )
+  })
 
   return (
     <div>
