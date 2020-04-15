@@ -36,7 +36,7 @@ const LoginPage = () => {
                     minHeight : '80vh'
                 }}
             >
-                <div className='col-7'
+                <div className='col-7 p-0'
                     style={{
                         backgroundColor : 'grey',
                         display : 'flex',
@@ -84,7 +84,7 @@ const LoginPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className='col-5'
+                <div className='col-5 p-0'
                     style={{
                         display : 'flex',
                         justifyContent : 'center',

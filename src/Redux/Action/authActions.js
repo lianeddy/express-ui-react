@@ -3,7 +3,8 @@ import {
     API_AUTH_SUCCESS, 
     API_AUTH_FAILED, 
     LOGIN,
-    LOGOUT
+    LOGOUT,
+    VERIFIED
 } from '../types';
 
 import Axios from 'axios';
@@ -38,14 +39,15 @@ export const Login = (form) => {
         })
         try{
             let res = await Axios.post(`${API_URL}/users/login`, form)
-            let { id, username, email, roleId, token } = res.data.data
+            let { id, username, email, roleId, token, verified } = res.data.data
             dispatch({
                 type : LOGIN,
                 payload : {
                     id,
                     username,
                     email,
-                    roleId
+                    roleId,
+                    verified
                 }
             })
             localStorage.setItem('token', token)
@@ -68,12 +70,19 @@ export const Register = (form) => {
         Axios.post(`${API_URL}/users/register`, form) // {username, password, email}
         .then((res) => {
             console.log(res.data)
+            let { id, username, email, roleId, token, verified } = res.data.data
             // {status : 'Success', data : {id,username, email, roleId}, message: ''}
             dispatch({
                 type : LOGIN,
-                payload : res.data.data
+                payload : {
+                    id, 
+                    username, 
+                    email, 
+                    roleId,
+                    verified
+                }
             })
-            localStorage.setItem('token', JSON.stringify(res.data.data))
+            localStorage.setItem('token', token)
             dispatch({
                 type : API_AUTH_SUCCESS
             })
@@ -102,14 +111,15 @@ export const keepLogin = (token) => {
                     }
                 }
                 let res = await Axios.post(`${API_URL}/users/keep-login`, {}, headers)
-                let { id, username, email, roleId } = res.data.data;
+                let { id, username, email, roleId, verified } = res.data.data;
                 dispatch({
                     type : LOGIN,
                     payload : {
                         id,
                         username,
                         email, 
-                        roleId
+                        roleId,
+                        verified
                     }
                 })
                 dispatch({
@@ -130,5 +140,29 @@ export const Logout = () => {
         dispatch({
             type : LOGOUT
         })
+    }
+}
+
+export const Verification = (form) => {
+    return async (dispatch) => {
+        dispatch({
+            type : API_AUTH_START
+        })
+        try{
+            let res = await Axios.post(`${API_URL}/users/verification`, form);
+            // true res.data.data
+            dispatch({
+                type : VERIFIED,
+                payload : res.data.data
+            })
+            dispatch({
+                type : API_AUTH_SUCCESS
+            })
+
+        }catch(err){
+            dispatch({
+                type : API_AUTH_FAILED
+            })
+        }
     }
 }
