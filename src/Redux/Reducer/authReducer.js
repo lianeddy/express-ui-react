@@ -13,7 +13,8 @@ const INITIAL_STATE = {
     email : '',
     roleId : 0,
     loading : false,
-    verified : false
+    verified : false,
+    error : ''
 }
 
 export const authReducer = (state = INITIAL_STATE, action) => {
@@ -31,7 +32,8 @@ export const authReducer = (state = INITIAL_STATE, action) => {
         case API_AUTH_FAILED : 
             return{
                 ...state,
-                loading : false
+                loading : false,
+                error : action.payload
             }
         case LOGIN : 
             return {

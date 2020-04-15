@@ -160,8 +160,12 @@ export const Verification = (form) => {
             })
 
         }catch(err){
+            console.log(err, 'ini error')
+            console.log(err.status)
+            console.log(err.message)
             dispatch({
-                type : API_AUTH_FAILED
+                type : API_AUTH_FAILED,
+                payload : err.response
             })
         }
     }
