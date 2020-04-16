@@ -19,7 +19,7 @@ const Verify = (props) => {
                 password
             })
         )
-    }, [])
+    })
     let verified = useSelector((state) => state.auth.verified)
     let err = useSelector((state) => state.auth.error)
     console.log(err.data)

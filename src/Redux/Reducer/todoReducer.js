@@ -30,10 +30,9 @@ export const todoReducer = (state = INITIAL_STATE, action) => {
         case FETCH_DATA : 
             return{
                 ...state,
-                ...action.payload
+                dataList : action.payload
             }
         default : 
             return state
-
     }
 }

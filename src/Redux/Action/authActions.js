@@ -96,10 +96,10 @@ export const Register = (form) => {
 }
 
 export const keepLogin = (token) => {
-    console.log('keeplogin')
+    // console.log('keeplogin')
     return async (dispatch) => {
         let token = localStorage.getItem('token')
-        console.log(token)
+        // console.log(token)
         try{        
             if(token){
                 dispatch({
@@ -170,3 +170,4 @@ export const Verification = (form) => {
         }
     }
 }
+

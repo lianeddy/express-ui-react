@@ -1,7 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Input, Table, CustomInput } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchData, addData, editData, deleteData } from '../Redux/Action/todoActions';
 
 const Todo = () => {
+
+    let userId = useSelector((state) => state.auth.id)
+    
+    let dispatch = useDispatch()
+    const [update, setUpdate] = useState(false)
+
+    useEffect(() => {
+        dispatch(
+            fetchData(userId)
+        )
+        if(update){
+            setUpdate(false)
+        }
+    },[userId, dispatch, update])
+
+    let dataList = useSelector((state) => state.todo.dataList)
+
+    // console.log(dataList)
 
     const [todo, setTodo] = useState('')
     const [image, setImage] = useState({
@@ -20,10 +40,82 @@ const Todo = () => {
             })
         }else{
             setImage({
-                imageFile : 'Select File...',
-                imageName : undefined
+                imageName : 'Select File...',
+                imageFile : undefined
             })
         }
+    }
+    // console.log(image)
+
+    let handleSubmit = () => {
+        // file image di image.imageFile
+
+        let formData = new FormData();
+        formData.append('image', image.imageFile);
+        formData.append('todo', todo)
+
+        dispatch(
+            addData(userId, formData)
+        )
+        setUpdate(true)
+    }
+    let handleEdit = (id, todo) => {
+        dispatch(
+            editData(id, todo)
+        )
+        setUpdate(true)
+        setToggle(null)
+    }
+    let handleDelete = (id) => {
+        dispatch(
+            deleteData(id)
+        )
+        setUpdate(true)
+    }
+
+    let [toggle, setToggle] = useState(null)
+    let [editTodo, setEditTodo] = useState('')
+    // console.log(editTodo)
+    let renderTable = () => {
+        return dataList.map((val, index) => {
+            if(toggle === val.id){
+                return(
+                    <tr key={index}>
+                        <td>{val.id}</td>
+                        <td>
+                            <Input
+                                onChange={(e) => setEditTodo(e.target.value)}
+                                defaultValue={val.todo}
+                            />
+                        </td>
+                        <td>Image</td>
+                        <td>
+                            <Button onClick={() => setToggle(null)}>
+                                Cancel
+                            </Button>
+                            <Button onClick={() => handleEdit(val.id, editTodo)}>
+                                Confirm
+                            </Button>
+                        </td>
+                    </tr>
+                )
+            }
+            return(
+                <tr key={index}>
+                    <td>{index+1}</td>
+                    <td>{val.todo}</td>
+                    <td>Image</td>
+                    <td>
+                        <Button onClick={() => setToggle(val.id)}>
+                            Edit
+                        </Button>
+                        <Button onClick={() => handleDelete(val.id)}>
+                            Delete
+                        </Button>
+                    </td>
+                </tr>
+            )
+        })
     }
 
     return ( 
@@ -46,6 +138,9 @@ const Todo = () => {
                     </tr>
                 </thead>
                 <tbody>
+                    {renderTable()}
+                </tbody>
+                <tfoot>
                     <tr>
                         <td>
                             #
@@ -71,13 +166,13 @@ const Todo = () => {
                         </td>
                         <td>
                             <div>
-                                <Button className='form-control'>
+                                <Button className='form-control' onClick={handleSubmit}>
                                     Add
                                 </Button>
                             </div>
                         </td>
                     </tr>
-                </tbody>
+                </tfoot>
             </Table>
         </div>
     );
