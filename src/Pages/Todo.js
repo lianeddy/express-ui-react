@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Input, Table, CustomInput } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchData, addData, editData, deleteData } from '../Redux/Action/todoActions';
+import { API_URL } from '../Support/API_URL';
 
 const Todo = () => {
 
@@ -104,7 +105,9 @@ const Todo = () => {
                 <tr key={index}>
                     <td>{index+1}</td>
                     <td>{val.todo}</td>
-                    <td>Image</td>
+                    <td>
+                        <img src={API_URL+val.imagePath} alt='Gambar Todo' height='100px'/>
+                    </td>
                     <td>
                         <Button onClick={() => setToggle(val.id)}>
                             Edit
