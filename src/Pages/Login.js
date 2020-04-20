@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Login } from '../Redux/Action';
 
 const LoginPage = () => {
-
     const [formInput, setFormInput] = useState({
         username : '',
         password : ''
@@ -16,12 +17,24 @@ const LoginPage = () => {
         })
     }
 
-    const handleLogin = () => {
+    const dispatch = useDispatch()
 
+    const handleLogin = () => {
+        dispatch(
+            Login(formInput)
+        )
     }
 
-    console.log(formInput)
+    const loading = useSelector((state) => state.auth.loading)
+    const username = useSelector(({ auth }) => auth.username)
 
+    // console.log(formInput)
+
+    if(username){
+        return(
+            <Redirect to='/'/>
+        )
+    }
     return ( 
         <div>
             <div className='row'
@@ -29,7 +42,7 @@ const LoginPage = () => {
                     minHeight : '80vh'
                 }}
             >
-                <div className='col-7'
+                <div className='col-7 p-0'
                     style={{
                         backgroundColor : 'grey',
                         display : 'flex',
@@ -77,7 +90,7 @@ const LoginPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className='col-5'
+                <div className='col-5 p-0'
                     style={{
                         display : 'flex',
                         justifyContent : 'center',
@@ -117,7 +130,13 @@ const LoginPage = () => {
                                 className='form-control btn-custom gray'
                                 onClick={handleLogin}
                             >
-                                Login
+                                {
+                                    loading
+                                    ?
+                                    'Loading...'
+                                    :
+                                    'Login'
+                                }
                             </Button>
                         </FormGroup>
                     </Form>

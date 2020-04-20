@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Register } from '../Redux/Action';
+import { useDispatch, useSelector } from 'react-redux';
 
 const RegisterPage = () => {
 
@@ -13,12 +13,6 @@ const RegisterPage = () => {
         confirmPassword : ''
     })
 
-    // const auth = useSelector(({auth}) => auth)
-
-    // useEffect(() => {
-
-    // }, [])
-
     const handleChange = (e) => {
         setFormInput({
             ...formInput,
@@ -26,8 +20,7 @@ const RegisterPage = () => {
         })
     }
 
-
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     const handleRegister = ()=> {
         let { username, email, password, confirmPassword } = formInput;
@@ -35,19 +28,30 @@ const RegisterPage = () => {
             if(password === confirmPassword){
                 dispatch(
                     Register({
-                        username, 
+                        username,
+                        email,
                         password
                     })
-                )
+                    )
             }else{
-                window.alert('Invalid Password')
+                alert('Invalid Password')
             }
+        }else{
+            alert('Please fill in all the forms')
         }
     }
 
-    console.log(formInput)
+    const loading = useSelector((state) => state.auth.loading)
+    const username = useSelector(({auth}) => auth.username)
 
-    return ( 
+    // console.log(formInput, 'isi state')
+    // console.log(loading, 'isi global state loading')
+    if(username){
+        return(
+            <Redirect to='/'/>
+        )
+    }
+    return(
         <div>
             <div className='row'
                 style={{
@@ -112,7 +116,13 @@ const RegisterPage = () => {
                                 className='form-control btn-custom gray'
                                 onClick={handleRegister}
                             >
-                                Login
+                                {
+                                    loading
+                                    ?
+                                    'Loading...'
+                                    :
+                                    'Register'
+                                }
                             </Button>
                         </FormGroup>
                     </Form>
@@ -167,7 +177,8 @@ const RegisterPage = () => {
                 </div>
             </div>
         </div>
-    );
+    )
+
 }
  
 export default RegisterPage;
