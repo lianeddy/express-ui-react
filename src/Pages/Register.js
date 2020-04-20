@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Register } from '../Redux/Action';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -42,9 +42,15 @@ const RegisterPage = () => {
     }
 
     const loading = useSelector((state) => state.auth.loading)
+    const username = useSelector(({auth}) => auth.username)
 
-    console.log(formInput, 'isi state')
-    console.log(loading, 'isi global state loading')
+    // console.log(formInput, 'isi state')
+    // console.log(loading, 'isi global state loading')
+    if(username){
+        return(
+            <Redirect to='/'/>
+        )
+    }
     return(
         <div>
             <div className='row'

@@ -21,6 +21,7 @@ const Todo = () => {
     },[userId, dispatch, update])
 
     let dataList = useSelector((state) => state.todo.dataList)
+    let loading = useSelector((state) => state.todo.loading)
 
     // console.log(dataList)
 
@@ -170,7 +171,13 @@ const Todo = () => {
                         <td>
                             <div>
                                 <Button className='form-control' onClick={handleSubmit}>
-                                    Add
+                                    {
+                                        loading
+                                        ?
+                                        'Loading...'
+                                        :
+                                        'Add'
+                                    }
                                 </Button>
                             </div>
                         </td>

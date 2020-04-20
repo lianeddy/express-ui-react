@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Form, FormGroup, Label, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../Redux/Action';
 
@@ -26,9 +26,15 @@ const LoginPage = () => {
     }
 
     const loading = useSelector((state) => state.auth.loading)
+    const username = useSelector(({ auth }) => auth.username)
 
     // console.log(formInput)
 
+    if(username){
+        return(
+            <Redirect to='/'/>
+        )
+    }
     return ( 
         <div>
             <div className='row'
