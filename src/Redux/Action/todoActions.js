@@ -74,6 +74,7 @@ export const editData = (id, formData) => {
                 }
             }
             await Axios.post(`${API_URL}/todo/edit-todo/${id}`, formData, headers);
+            dispatch(fetchData())
             dispatch({
                 type : API_TODO_SUCCESS
             })
@@ -97,6 +98,7 @@ export const deleteData = (id) => {
                 }
             }
             await Axios.delete(`${API_URL}/todo/delete-todo/${id}`, headers);
+            dispatch(fetchData())
             dispatch({
                 type : API_TODO_SUCCESS
             })
