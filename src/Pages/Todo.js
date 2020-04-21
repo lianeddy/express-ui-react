@@ -9,16 +9,16 @@ const Todo = () => {
     let userId = useSelector((state) => state.auth.id)
     
     let dispatch = useDispatch()
-    const [update, setUpdate] = useState(false)
+    // const [update, setUpdate] = useState(false)
 
     useEffect(() => {
         dispatch(
             fetchData(userId)
         )
-        if(update){
-            setUpdate(false)
-        }
-    },[userId, dispatch, update])
+        // if(update){
+        //     setUpdate(false)
+        // }
+    },[userId, dispatch])
 
     let dataList = useSelector((state) => state.todo.dataList)
     let loading = useSelector((state) => state.todo.loading)
@@ -27,6 +27,10 @@ const Todo = () => {
 
     const [todo, setTodo] = useState('')
     const [image, setImage] = useState({
+        imageName : 'Select File...',
+        imageFile : undefined
+    })
+    const [imageEdit, setImageEdit] = useState({
         imageName : 'Select File...',
         imageFile : undefined
     })
@@ -49,6 +53,21 @@ const Todo = () => {
     }
     // console.log(image)
 
+    let handleImageEdit = (e) => {
+        if(e.target.files[0]){
+            setImageEdit({
+                imageFile : e.target.files[0],
+                imageName : e.target.files[0].name
+            })
+        }else{
+            setImageEdit({
+                imageName : 'Select File...',
+                imageFile : undefined
+            })
+        }
+    }
+    console.log(imageEdit)
+
     let handleSubmit = () => {
         // file image di image.imageFile
 
@@ -63,20 +82,23 @@ const Todo = () => {
         dispatch(
             addData(userId, formData)
         )
-        setUpdate(true)
+        // setUpdate(true)
     }
-    let handleEdit = (id, todo) => {
+    let handleEdit = (id) => {
+        let formData = new FormData();
+        formData.append('image', image.imageFile);
+        formData.append('todo', editTodo)
         dispatch(
-            editData(id, todo)
+            editData(id, formData)
         )
-        setUpdate(true)
+        // setUpdate(true)
         setToggle(null)
     }
     let handleDelete = (id) => {
         dispatch(
             deleteData(id)
         )
-        setUpdate(true)
+        // setUpdate(true)
     }
 
     let [toggle, setToggle] = useState(null)
@@ -94,12 +116,21 @@ const Todo = () => {
                                 defaultValue={val.todo}
                             />
                         </td>
-                        <td>Image</td>
+                        <td>
+                            {/* <CustomInput
+                                type='file'
+                                name='imageNameEdit'
+                                id='imageNameEdit'
+                                label={imageEdit.imageName}
+                                onChange={handleImageEdit}
+                                value={imageEdit.imageFile}
+                            /> */}
+                        </td>
                         <td>
                             <Button onClick={() => setToggle(null)}>
                                 Cancel
                             </Button>
-                            <Button onClick={() => handleEdit(val.id, editTodo)}>
+                            <Button onClick={() => handleEdit(val.id)}>
                                 Confirm
                             </Button>
                         </td>

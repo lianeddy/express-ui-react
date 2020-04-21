@@ -50,7 +50,7 @@ export const addData = (userId, formData) => {
                 }
             }
             await Axios.post(`${API_URL}/todo/add-todo/${userId}`, formData, headers);
-            // dispatch(fetchData())
+            dispatch(fetchData())
             dispatch({
                 type : API_TODO_SUCCESS
             })
@@ -62,7 +62,7 @@ export const addData = (userId, formData) => {
     }
 }
 
-export const editData = (id, todo) => {
+export const editData = (id, formData) => {
     return async (dispatch) => {
         dispatch({
             type : API_TODO_START
@@ -73,7 +73,7 @@ export const editData = (id, todo) => {
                     'Authorization' : `Bearer ${token}`
                 }
             }
-            await Axios.post(`${API_URL}/todo/edit-todo/${id}`, {todo}, headers);
+            await Axios.post(`${API_URL}/todo/edit-todo/${id}`, formData, headers);
             dispatch({
                 type : API_TODO_SUCCESS
             })
