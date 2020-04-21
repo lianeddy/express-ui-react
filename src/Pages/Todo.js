@@ -55,7 +55,11 @@ const Todo = () => {
         let formData = new FormData();
         formData.append('image', image.imageFile);
         formData.append('todo', todo)
-
+        setImage({
+            imageName : 'Select File...',
+            imageFile : undefined
+        })
+        setTodo('')
         dispatch(
             addData(userId, formData)
         )
@@ -155,6 +159,7 @@ const Todo = () => {
                                 name='todo'
                                 id='todo'
                                 onChange={handleChange} 
+                                value={todo}
                             />
                         </td>
                         <td>
@@ -165,6 +170,7 @@ const Todo = () => {
                                     id='imageName'
                                     label={image.imageName}
                                     onChange={handleImage}
+                                    // value={image.imageFile}
                                 />
                             </div>
                         </td>

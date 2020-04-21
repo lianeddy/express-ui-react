@@ -50,6 +50,7 @@ export const addData = (userId, formData) => {
                 }
             }
             await Axios.post(`${API_URL}/todo/add-todo/${userId}`, formData, headers);
+            // dispatch(fetchData())
             dispatch({
                 type : API_TODO_SUCCESS
             })
