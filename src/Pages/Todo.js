@@ -89,14 +89,14 @@ const Todo = () => {
         formData.append('image', image.imageFile);
         formData.append('todo', editTodo)
         dispatch(
-            editData(id, formData)
+            editData(id, formData, userId)
         )
         // setUpdate(true)
         setToggle(null)
     }
     let handleDelete = (id) => {
         dispatch(
-            deleteData(id)
+            deleteData(id, userId)
         )
         // setUpdate(true)
     }

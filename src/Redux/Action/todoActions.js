@@ -50,7 +50,7 @@ export const addData = (userId, formData) => {
                 }
             }
             await Axios.post(`${API_URL}/todo/add-todo/${userId}`, formData, headers);
-            dispatch(fetchData())
+            dispatch(fetchData(userId))
             dispatch({
                 type : API_TODO_SUCCESS
             })
@@ -62,7 +62,7 @@ export const addData = (userId, formData) => {
     }
 }
 
-export const editData = (id, formData) => {
+export const editData = (id, formData, userId) => {
     return async (dispatch) => {
         dispatch({
             type : API_TODO_START
@@ -74,7 +74,7 @@ export const editData = (id, formData) => {
                 }
             }
             await Axios.post(`${API_URL}/todo/edit-todo/${id}`, formData, headers);
-            dispatch(fetchData())
+            dispatch(fetchData(userId))
             dispatch({
                 type : API_TODO_SUCCESS
             })
@@ -86,7 +86,7 @@ export const editData = (id, formData) => {
     }
 }
 
-export const deleteData = (id) => {
+export const deleteData = (id, userId) => {
     return async (dispatch) => {
         dispatch({
             type : API_TODO_START
@@ -98,7 +98,7 @@ export const deleteData = (id) => {
                 }
             }
             await Axios.delete(`${API_URL}/todo/delete-todo/${id}`, headers);
-            dispatch(fetchData())
+            dispatch(fetchData(userId))
             dispatch({
                 type : API_TODO_SUCCESS
             })
