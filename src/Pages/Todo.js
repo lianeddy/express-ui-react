@@ -30,10 +30,10 @@ const Todo = () => {
         imageName : 'Select File...',
         imageFile : undefined
     })
-    const [imageEdit, setImageEdit] = useState({
-        imageName : 'Select File...',
-        imageFile : undefined
-    })
+    // const [imageEdit, setImageEdit] = useState({
+    //     imageName : 'Select File...',
+    //     imageFile : undefined
+    // })
 
     let handleChange = (e) => {
         setTodo(e.target.value)
@@ -53,20 +53,20 @@ const Todo = () => {
     }
     // console.log(image)
 
-    let handleImageEdit = (e) => {
-        if(e.target.files[0]){
-            setImageEdit({
-                imageFile : e.target.files[0],
-                imageName : e.target.files[0].name
-            })
-        }else{
-            setImageEdit({
-                imageName : 'Select File...',
-                imageFile : undefined
-            })
-        }
-    }
-    console.log(imageEdit)
+    // let handleImageEdit = (e) => {
+    //     if(e.target.files[0]){
+    //         setImageEdit({
+    //             imageFile : e.target.files[0],
+    //             imageName : e.target.files[0].name
+    //         })
+    //     }else{
+    //         setImageEdit({
+    //             imageName : 'Select File...',
+    //             imageFile : undefined
+    //         })
+    //     }
+    // }
+    // console.log(imageEdit)
 
     let handleSubmit = () => {
         // file image di image.imageFile
