@@ -22,7 +22,6 @@ const Todo = () => {
 
     let dataList = useSelector((state) => state.todo.dataList)
     let loading = useSelector((state) => state.todo.loading)
-
     // console.log(dataList)
 
     const [todo, setTodo] = useState('')
