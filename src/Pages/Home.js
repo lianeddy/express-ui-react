@@ -2,27 +2,37 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import io from 'socket.io-client';
 import { API_URL } from '../Support/API_URL';
-import { Input, Button, Table } from 'reactstrap';
+import { Input, Button, Table, Badge } from 'reactstrap';
 import Swal from 'sweetalert2';
 
 const Home = () => {
     const [userCount, setUserCount] = useState(0);
     const [arrSocket, setArrSocket] = useState([]);
+    const [notifCount, setNotifCount] = useState(0);
     const [socket, setSocket] = useState('');
+    const [orderBy, setOrderBy] = useState('DESC');
+    const [filter, setFilter] = useState('');
 
     useEffect(() => {
         const socket = io(API_URL);
-        Axios.get(`${API_URL}/socket/get-socket`)
+        socket.on('Connected', updateUserCount)
+        socket.on('Socket', updateArrSocket)
+        socket.on('notifCount', updateNotifCount)
+    },[])
+
+    useEffect(() => {
+        let url = `${API_URL}/socket/get-socket?orderBy=${orderBy}`
+        if(filter){
+            url += ` &filterBy=${filter}`
+        }
+        Axios.get(url)
         .then((res) => {
             setArrSocket(res.data)
         })
         .catch((err) => {
             console.log(err)
         })
-
-        socket.on('Connected', updateUserCount)
-        socket.on('Socket', updateArrSocket)
-    },[])
+    }, [orderBy, filter])
 
     let updateUserCount = (num) => {
         setUserCount(num)
@@ -30,26 +40,35 @@ const Home = () => {
 
     let updateArrSocket = (arr) => {
         setArrSocket(arr)
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-          })
-          Toast.fire({
-            title: arr[arr.length-1].string
-          })
+    }
+
+    let updateNotifCount = (num) => {
+        setNotifCount(num)
     }
 
     let handleAdd = () => {
-        Axios.post(`${API_URL}/socket/add-socket`, {string : socket})
+        let url = `${API_URL}/socket/add-socket?orderBy=${orderBy}`
+        if(filter){
+            url += ` &filterBy=${filter}`
+        }
+        Axios.post(url, {string : socket})
         .then((res) => {
             console.log(res.data, 'hasil axios')
+        })
+    }
+
+    let handleEdit = async (id) => {
+        let url = `${API_URL}/socket/update-socket/${id}?orderBy=${orderBy}`
+        if(filter){
+            url += ` &filterBy=${filter}`
+        }
+        await Axios.patch(url)
+    }
+    
+    let handleAll = () => {
+        // await Axios.patch(`${API_URL}/socket/update-all`)
+        arrSocket.forEach( async (val) => {
+            await Axios.patch(`${API_URL}/socket/update-socket/${val.id}`)
         })
     }
 
@@ -59,10 +78,14 @@ const Home = () => {
     let renderSocket = () => {
         return arrSocket.map((val) => {
             return(
-                <tr>
-                    <td>{val.id}</td>
-                    <td>{val.string}</td>
-                    <td></td>
+                <tr key={val.id}>
+                    <td>{val.id} </td>
+                    <td>{val.string} { !val.read ? <Badge color="danger">New</Badge> : null }</td>
+                    <td>
+                        <Button onClick={() => handleEdit(val.id)}>
+                            Mark as Read
+                        </Button>
+                    </td>
                 </tr>
             )
         })
@@ -75,6 +98,35 @@ const Home = () => {
             </div>
             <div>
                 Users online : {userCount}
+            </div>
+            <div>
+                New Notification : {notifCount}
+            </div>
+            <div>
+                <Button onClick={handleAll}>
+                    Mark All as Read
+                </Button>
+            </div>
+            <div
+                style={{
+                    width : '300px'
+                }}
+            >
+                <Input type="select" onChange={(e) => setOrderBy(e.target.value)}>
+                    <option value='DESC'>Newest</option>
+                    <option value='ASC'>Oldest</option>
+                </Input>
+            </div>
+            <div
+                style={{
+                    width : '300px'
+                }}
+            >
+                <Input type="select" onChange={(e) => setFilter(e.target.value)}>
+                    <option value=''>All</option>
+                    <option value='0'>Unread</option>
+                    <option value='1'>Read</option>
+                </Input>
             </div>
             <div>
                 <Table>
